@@ -9,7 +9,19 @@
   "scripts": {
     "start": "node src/cli.js",
     "watch": "node src/scheduler.js",
-    "init": "node src/init.js"
+    "init": "node src/init.js",
+    "build:exe": "pkg . --out-path dist",
+    "build:linux": "pkg . --targets node18-linux-x64 --out-path dist",
+    "build:mac": "pkg . --targets node18-macos-x64 --out-path dist",
+    "build:windows": "pkg . --targets node18-win-x64 --out-path dist",
+    "build:all": "pkg . --targets node18-linux-x64,node18-macos-x64,node18-win-x64 --out-path dist"
+  },
+  "pkg": {
+    "assets": [
+      "config/**/*",
+      "node_modules/**/*"
+    ],
+    "outputPath": "dist"
   },
   "keywords": [
     "documentation",
