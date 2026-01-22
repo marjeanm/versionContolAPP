@@ -1,0 +1,46 @@
+{
+  "generated": "2026-01-22T11:01:24.536Z",
+  "chunks": [
+    {
+      "id": "chunk-ffbf18ab",
+      "name": "API Reference",
+      "content": "# API Reference\\n\\n## Endpoints\\n\\n### GET /api/docs\\n\\nRetrieve all documentation chunks.\\n\\n### POST /api/docs\\n\\nCreate a new documentation chunk.",
+      "metadata": {
+        "order": 1,
+        "tags": [
+          "api",
+          "reference"
+        ],
+        "createdAt": "2026-01-22T10:53:02.147Z",
+        "updatedAt": "2026-01-22T10:53:02.148Z"
+      },
+      "hash": "6631f75b3b733c36ffb126404f0304c8c282aaa52714892473aee394eac838db"
+    },
+    {
+      "id": "chunk-f612ed8b",
+      "name": "Testing Guide",
+      "content": "# Testing Guide - Second Update\n\n## Overview\nThis demonstrates UPDATE detection (not CREATE).\n\n## Small Changes\nJust a few minor tweaks to test low-impact updates.\n\n## Example Code\n```bash\nnpm run watch\n```",
+      "metadata": {
+        "order": 3,
+        "tags": [
+          "testing",
+          "guide"
+        ],
+        "createdAt": "2026-01-22T10:58:18.752Z",
+        "updatedAt": "2026-01-22T10:59:09.177Z"
+      },
+      "hash": "cd075143fd27ee99d6d4e0436f4bbd0178f3b9bc6a87452f5e0bec3f78663927"
+    },
+    {
+      "id": "chunk-1d5621d3",
+      "name": "Getting Started",
+      "content": "This is an example documentation chunk.\n\nYou can write markdown here:\n- Lists\n- **Bold text**\n- *Italic text*\n- `code`\n\n## Subsections\n\nAdd subsections as needed.\n\n### Code Examples\n\n```javascript\nconst example = 'Hello, World!';\nconsole.log(example);\n```\n\nEdit this chunk or create new ones to build your documentation.\n",
+      "metadata": {
+        "order": 0,
+        "createdAt": "2026-01-22T10:52:21.537Z",
+        "updatedAt": "2026-01-22T10:52:21.537Z"
+      },
+      "hash": "8688af76c7bc421a9655549dad4517ee64456b18ebc6a941ef3763a3dfb3c1d0"
+    }
+  ]
+}
