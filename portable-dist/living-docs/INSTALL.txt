@@ -1,0 +1,26 @@
+Living Docs - Portable Installation
+
+REQUIREMENTS:
+- Node.js 14+ must be installed on the target system
+- Download from: https://nodejs.org
+
+LINUX/MAC INSTALLATION:
+1. Extract this folder anywhere
+2. Run: ./bin/living-docs --help
+3. (Optional) Add to PATH:
+   sudo ln -s $(pwd)/bin/living-docs /usr/local/bin/living-docs
+
+WINDOWS INSTALLATION:
+1. Extract this folder anywhere
+2. Open Command Prompt in this folder
+3. Run: bin\living-docs.cmd --help
+4. (Optional) Add bin\ to your PATH
+
+USAGE:
+  living-docs init              # Initialize project
+  living-docs add "Doc" -c "Content"  # Add documentation
+  living-docs list              # List chunks
+  living-docs build             # Build master
+  living-docs watch             # Start monitoring
+
+For full documentation, see README.md

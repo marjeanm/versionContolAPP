@@ -1,0 +1,9 @@
+{
+  "interval": "*/15 * * * *",
+  "autoCommit": true,
+  "autoUpdate": true,
+  "chunksDir": "chunks",
+  "docsDir": "docs",
+  "historyDir": ".dochistory",
+  "masterFile": "docs/master.md"
+}
