@@ -1,0 +1,29 @@
+# Living Documentation System
+
+# History and tracking
+.dochistory/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+.temp/
+
+# Build outputs
+dist/
+build/
