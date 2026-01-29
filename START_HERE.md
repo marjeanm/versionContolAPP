@@ -180,6 +180,7 @@ node src/cli.js export --help
 |---------|--------|---------|
 | Add chunks | ✅ WORKING | `node src/cli.js add "Test" -c "Content"` |
 | Update chunks | ✅ WORKING | `node src/cli.js update <id> -c "New"` |
+| Delete chunks | ✅ WORKING | `node src/cli.js delete <id> --force` |
 | Change detection | ✅ WORKING | `node src/cli.js scan` |
 | Impact assessment | ✅ WORKING | `node src/cli.js assess` |
 | Version control | ✅ WORKING | `node src/cli.js history` |

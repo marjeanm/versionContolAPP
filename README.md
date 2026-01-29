@@ -90,6 +90,12 @@ node src/cli.js add <name> [file] [options]
 node src/cli.js update <chunkId> [file] [options]
   -c, --content <content>    New content
 
+# Delete chunk
+node src/cli.js delete <chunkId> [options]
+node src/cli.js remove <chunkId>  # Alias
+node src/cli.js rm <chunkId>      # Alias
+  -f, --force                Force deletion without confirmation
+
 # List all chunks
 node src/cli.js list
 
