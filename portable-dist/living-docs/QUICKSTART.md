@@ -57,19 +57,6 @@ node src/cli.js assess
 node src/cli.js pull
 ```
 
-**Delete a chunk:**
-```bash
-# List chunks to find the ID
-node src/cli.js list
-
-# Delete with confirmation
-node src/cli.js delete chunk-abc12345 --force
-
-# Or use aliases
-node src/cli.js remove chunk-abc12345 --force
-node src/cli.js rm chunk-abc12345 --force
-```
-
 ### Step 5: Enable Auto-Monitoring
 
 ```bash

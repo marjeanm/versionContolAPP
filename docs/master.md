@@ -1,6 +1,6 @@
 # Master Document
 
-*Last updated: 2026-01-22T10:53:18.205Z*
+*Last updated: 2026-01-22T10:59:41.580Z*
 
 ---
 
@@ -8,6 +8,24 @@
 ## API Reference
 
 # API Reference\n\n## Endpoints\n\n### GET /api/docs\n\nRetrieve all documentation chunks.\n\n### POST /api/docs\n\nCreate a new documentation chunk.
+
+---
+
+<!-- CHUNK: chunk-f612ed8b -->
+## Testing Guide
+
+# Testing Guide - Second Update
+
+## Overview
+This demonstrates UPDATE detection (not CREATE).
+
+## Small Changes
+Just a few minor tweaks to test low-impact updates.
+
+## Example Code
+```bash
+npm run watch
+```
 
 ---
 

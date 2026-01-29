@@ -123,45 +123,6 @@ program
     }
   });
 
-// Delete chunk command
-program
-  .command('delete <chunkId>')
-  .alias('remove')
-  .alias('rm')
-  .description('Delete a documentation chunk')
-  .option('-f, --force', 'Skip confirmation prompt')
-  .action((chunkId, options) => {
-    const chunk = docManager.getChunk(chunkId);
-
-    if (!chunk) {
-      console.log(chalk.red(`Error: Chunk ${chunkId} not found`));
-      process.exit(1);
-    }
-
-    // Show chunk info
-    console.log(chalk.yellow('\nYou are about to delete:'));
-    console.log(chalk.gray(`  ID: ${chunk.id}`));
-    console.log(chalk.gray(`  Name: ${chunk.name}`));
-    console.log(chalk.gray(`  Updated: ${chunk.metadata.updatedAt}`));
-
-    if (!options.force) {
-      console.log(chalk.yellow('\nUse --force to confirm deletion'));
-      console.log(chalk.gray('Example: living-docs delete ' + chunkId + ' --force'));
-      process.exit(0);
-    }
-
-    const deleted = docManager.deleteChunk(chunkId);
-
-    if (deleted) {
-      console.log(chalk.green(`\n✓ Chunk deleted: ${chunkId}`));
-      console.log(chalk.gray('  Run "living-docs scan" to detect the deletion'));
-      console.log(chalk.gray('  Run "living-docs pull" to commit the change'));
-    } else {
-      console.log(chalk.red('Error: Failed to delete chunk'));
-      process.exit(1);
-    }
-  });
-
 // List chunks command
 program
   .command('list')
