@@ -31,7 +31,9 @@ node src/init.js
 ```
 
 This creates the necessary directory structure:
+
 - `chunks/` - Individual documentation chunks
+
 - `docs/` - Generated master documents and views
 - `.dochistory/` - Version control and change history
 - `config/` - Configuration files
@@ -67,6 +69,7 @@ node src/cli.js watch
 
 The system will now:
 - Check for changes every 15 minutes
+
 - Assess impact of changes
 - Create commits automatically
 - Update the master document
@@ -95,6 +98,15 @@ node src/cli.js delete <chunkId> [options]
 node src/cli.js remove <chunkId>  # Alias
 node src/cli.js rm <chunkId>      # Alias
   -f, --force                Force deletion without confirmation
+
+# Delete all chunks
+node src/cli.js delete-all [options]
+node src/cli.js clear  # Alias
+  -f, --force                Force deletion without confirmation
+
+# Reorder chunk
+node src/cli.js reorder <chunkId> <order>
+node src/cli.js order <chunkId> <order>  # Alias
 
 # List all chunks
 node src/cli.js list

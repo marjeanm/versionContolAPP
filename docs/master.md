@@ -1,31 +1,6 @@
 # Master Document
 
-*Last updated: 2026-01-22T10:59:41.580Z*
-
----
-
-<!-- CHUNK: chunk-ffbf18ab -->
-## API Reference
-
-# API Reference\n\n## Endpoints\n\n### GET /api/docs\n\nRetrieve all documentation chunks.\n\n### POST /api/docs\n\nCreate a new documentation chunk.
-
----
-
-<!-- CHUNK: chunk-f612ed8b -->
-## Testing Guide
-
-# Testing Guide - Second Update
-
-## Overview
-This demonstrates UPDATE detection (not CREATE).
-
-## Small Changes
-Just a few minor tweaks to test low-impact updates.
-
-## Example Code
-```bash
-npm run watch
-```
+*Last updated: 2026-01-29T22:38:36.034Z*
 
 ---
 
@@ -53,6 +28,13 @@ console.log(example);
 
 Edit this chunk or create new ones to build your documentation.
 
+
+---
+
+<!-- CHUNK: chunk-ffbf18ab -->
+## API Reference
+
+# API Reference\n\n## Endpoints\n\n### GET /api/docs\n\nRetrieve all documentation chunks.\n\n### POST /api/docs\n\nCreate a new documentation chunk.
 
 ---
 

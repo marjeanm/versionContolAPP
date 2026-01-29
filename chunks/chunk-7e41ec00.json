@@ -1,0 +1,10 @@
+{
+  "id": "chunk-7e41ec00",
+  "name": "NIST AI Risk Management Framework (AI RMF 1.0)",
+  "content": "# **Consulting & Reporting–Focused Overview**\n## Purpose & Scope\n\nThe **NIST AI Risk Management Framework (AI RMF 1.0)** is a voluntary, outcome-based framework designed to help organizations **design, deploy, and use AI systems responsibly**. It does **not** prescribe compliance checklists or risk tolerance thresholds. Instead, it provides a **structured way to identify, assess, prioritize, and manage AI risks** across the full lifecycle.\n\nAI risk is framed as **socio-technical**—arising from interactions between models, data, people, processes, incentives, and deployment contexts, not just technical defects.\n\n\n\n",
+  "metadata": {
+    "createdAt": "2026-01-23T15:15:03.841Z",
+    "updatedAt": "2026-01-23T15:15:03.842Z"
+  },
+  "hash": "194479248d3d22f5ab6b1de6799a95d77749f0ac02aa94c16b7370b212007648"
+}

@@ -162,6 +162,63 @@ program
     }
   });
 
+// Delete all chunks command
+program
+  .command('delete-all')
+  .alias('clear')
+  .description('Delete all documentation chunks')
+  .option('-f, --force', 'Skip confirmation prompt')
+  .action((options) => {
+    const chunks = docManager.getAllChunks();
+
+    if (chunks.length === 0) {
+      console.log(chalk.yellow('No chunks to delete'));
+      process.exit(0);
+    }
+
+    // Show what will be deleted
+    console.log(chalk.yellow(`\n⚠️  WARNING: You are about to delete ALL ${chunks.length} chunk(s):`));
+    console.log();
+    chunks.forEach((chunk, index) => {
+      console.log(chalk.gray(`  ${index + 1}. ${chunk.name} (${chunk.id})`));
+    });
+    console.log();
+
+    if (!options.force) {
+      console.log(chalk.red('⚠️  This action cannot be undone!'));
+      console.log(chalk.yellow('Use --force to confirm deletion of ALL chunks'));
+      console.log(chalk.gray('Example: living-docs delete-all --force'));
+      process.exit(0);
+    }
+
+    const result = docManager.deleteAllChunks();
+
+    console.log(chalk.green(`\n✓ Successfully deleted ${result.deleted} chunk(s)`));
+    console.log(chalk.gray('  Run "living-docs scan" to detect the deletions'));
+    console.log(chalk.gray('  Run "living-docs pull" to commit the changes'));
+  });
+
+// Reorder chunk command
+program
+  .command('reorder <chunkId> <order>')
+  .alias('order')
+  .description('Change the display order of a chunk')
+  .action((chunkId, order) => {
+    try {
+      const result = docManager.setChunkOrder(chunkId, order);
+
+      console.log(chalk.green(`✓ Chunk order updated: ${chunkId}`));
+      console.log(chalk.gray(`  Name: ${result.chunk.name}`));
+      console.log(chalk.gray(`  Old order: ${result.oldOrder}`));
+      console.log(chalk.gray(`  New order: ${result.newOrder}`));
+      console.log(chalk.gray('\n  Run "living-docs build" to regenerate master document'));
+      console.log(chalk.gray('  Run "living-docs scan" to detect the change'));
+    } catch (error) {
+      console.log(chalk.red(`Error: ${error.message}`));
+      process.exit(1);
+    }
+  });
+
 // List chunks command
 program
   .command('list')
