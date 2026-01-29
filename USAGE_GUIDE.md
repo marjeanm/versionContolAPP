@@ -1,514 +1,1 @@
-# Living Documentation System - Usage Guide
-
-## Table of Contents
-
-1. [Getting Started](#getting-started)
-2. [Working with Chunks](#working-with-chunks)
-3. [Change Management](#change-management)
-4. [Version Control](#version-control)
-5. [Automation](#automation)
-6. [Advanced Features](#advanced-features)
-
-## Getting Started
-
-### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd versionContolAPP
-
-# Install dependencies
-npm install
-
-# Initialize the system
-npm run init
-```
-
-### Your First Documentation
-
-1. **Create your first chunk:**
-   ```bash
-   node src/cli.js add "Introduction" -c "# Welcome\n\nThis is our documentation."
-   ```
-
-2. **View your chunks:**
-   ```bash
-   node src/cli.js list
-   ```
-
-3. **Build the master document:**
-   ```bash
-   node src/cli.js build
-   ```
-
-4. **View the result:**
-   ```bash
-   cat docs/master.md
-   ```
-
-## Working with Chunks
-
-### Creating Chunks
-
-**From inline content:**
-```bash
-node src/cli.js add "API Overview" -c "# API Overview\n\nOur REST API..."
-```
-
-**From a file:**
-```bash
-node src/cli.js add "Installation Guide" install.md
-```
-
-**With metadata:**
-```bash
-node src/cli.js add "Quick Start" -c "..." -o 0 -t "tutorial,beginner"
-```
-
-Options:
-- `-o, --order <number>`: Display order (lower numbers appear first)
-- `-t, --tags <tags>`: Comma-separated tags for organization
-
-### Updating Chunks
-
-1. **Find the chunk ID:**
-   ```bash
-   node src/cli.js list
-   ```
-
-2. **Update it:**
-   ```bash
-   node src/cli.js update chunk-abc12345 -c "New content"
-   ```
-
-   Or from a file:
-   ```bash
-   node src/cli.js update chunk-abc12345 updated-content.md
-   ```
-
-### Understanding Chunks
-
-Chunks are stored as JSON files in `chunks/`:
-
-```json
-{
-  "id": "chunk-abc12345",
-  "name": "Introduction",
-  "content": "# Welcome...",
-  "metadata": {
-    "createdAt": "2026-01-22T10:00:00.000Z",
-    "updatedAt": "2026-01-22T10:30:00.000Z",
-    "order": 0,
-    "tags": ["tutorial", "beginner"]
-  },
-  "hash": "a1b2c3d4..."
-}
-```
-
-## Change Management
-
-### Scanning for Changes
-
-```bash
-# Quick scan
-node src/cli.js scan
-
-# Scan with impact assessment
-node src/cli.js assess
-
-# Generate detailed report
-node src/cli.js assess -r
-```
-
-### Understanding Impact Levels
-
-**Low Impact (0-39 points):**
-- Minor text changes
-- Typo fixes
-- Small additions
-
-**Medium Impact (40-69 points):**
-- Section updates
-- New content added
-- Moderate restructuring
-
-**High Impact (70-100 points):**
-- Major rewrites (>50% changed)
-- Content deletion
-- Structural changes (headings, links modified)
-
-### Accepting Changes
-
-```bash
-# Accept all changes (creates commit, rebuilds master)
-node src/cli.js pull
-
-# Accept without creating commit
-node src/cli.js pull --no-commit
-
-# Accept without rebuilding master
-node src/cli.js pull --no-build
-```
-
-## Version Control
-
-### Viewing History
-
-```bash
-# View last 10 commits
-node src/cli.js history
-
-# View last 20 commits
-node src/cli.js history -n 20
-
-# View history for specific chunk
-node src/cli.js history --chunk chunk-abc12345
-```
-
-### Understanding Commits
-
-Each commit includes:
-- Unique ID
-- Timestamp
-- Author (user/scheduler/system)
-- List of changes
-- Impact assessment for each change
-
-Example commit:
-```json
-{
-  "id": "1706789400000-abc12345",
-  "message": "Pull: 3 change(s)",
-  "author": "user",
-  "timestamp": "2026-01-22T10:30:00.000Z",
-  "changes": [
-    {
-      "chunkId": "chunk-xyz",
-      "chunkName": "API Reference",
-      "type": "update",
-      "impact": "medium"
-    }
-  ]
-}
-```
-
-### History Files
-
-- `.dochistory/history.json` - Commit metadata
-- `.dochistory/snapshots/<commit-id>.json` - Full snapshots
-- `.dochistory/reports/` - Impact assessment reports
-
-## Automation
-
-### Cyclical Monitoring
-
-Start the automatic checker:
-```bash
-npm run watch
-# or
-node src/cli.js watch
-```
-
-**What it does:**
-1. Scans for changes every 15 minutes
-2. Assesses impact of detected changes
-3. Creates commits automatically
-4. Updates master document
-5. Generates impact reports
-6. Logs all activity to `.dochistory/scheduler.log`
-
-**Monitor the logs:**
-```bash
-# Follow the log file
-tail -f .dochistory/scheduler.log
-
-# View recent activity
-tail -n 50 .dochistory/scheduler.log
-```
-
-### Configuration
-
-Edit `config/config.json`:
-
-```json
-{
-  "interval": "*/15 * * * *",
-  "autoCommit": true,
-  "autoUpdate": true
-}
-```
-
-**Adjust the interval:**
-- Every 5 minutes: `"*/5 * * * *"`
-- Every 30 minutes: `"*/30 * * * *"`
-- Every hour: `"0 * * * *"`
-- Every 4 hours: `"0 */4 * * *"`
-
-**Disable auto-commit:**
-```json
-{
-  "autoCommit": false
-}
-```
-
-**Disable auto-update:**
-```json
-{
-  "autoUpdate": false
-}
-```
-
-## Advanced Features
-
-### Importing Existing Documentation
-
-```bash
-# Import markdown file
-node src/cli.js import existing-docs.md
-```
-
-The system will:
-1. Parse headings (## level)
-2. Create chunks for each section
-3. Preserve order
-4. Assign sequential order numbers
-
-### Exporting Documentation
-
-**To Markdown:**
-```bash
-node src/cli.js export markdown -o export.md
-```
-
-**To JSON:**
-```bash
-node src/cli.js export json -o export.json
-```
-
-**To HTML:**
-```bash
-node src/cli.js export html -o export.html
-```
-
-### Viewing Statistics
-
-```bash
-node src/cli.js stats
-```
-
-Displays:
-- Total chunks
-- Total commits
-- Change breakdown (create/update/delete)
-- Impact distribution (high/medium/low)
-- Scan statistics
-
-### Working with Tags
-
-Add tags when creating chunks:
-```bash
-node src/cli.js add "Security Guide" -c "..." -t "security,advanced"
-```
-
-Tags are stored in chunk metadata and can be used for filtering and organization.
-
-### Master Document Structure
-
-The generated master document includes:
-
-1. **Header** with metadata
-2. **Table of Contents** with links
-3. **Content sections** from all chunks (ordered)
-4. **Chunk metadata** (hidden in HTML comments)
-5. **Footer** with generation timestamp
-
-Example:
-```markdown
-# Master Document
-
-> **Living Documentation System**
-> Last Updated: 2026-01-22T10:30:00.000Z
-> Total Chunks: 5
-
----
-
-## Table of Contents
-
-1. [Introduction](#introduction)
-2. [Getting Started](#getting-started)
-...
-
----
-
-## 1. Introduction
-
-*Last modified: 2026-01-22T09:00:00.000Z*
-
-Content here...
-
-<!-- CHUNK_ID: chunk-abc -->
-<!-- CHUNK_HASH: a1b2c3... -->
-```
-
-### Impact Reports
-
-Generated in `.dochistory/reports/`:
-
-```markdown
-# Impact Assessment Report
-
-Generated: 2026-01-22T10:30:00.000Z
-
-## Overall Impact
-
-- **Level**: MEDIUM
-- **Score**: 45.5/100
-- **Summary**: 3 change(s) detected: 0 high, 2 medium, 1 low impact
-
-### Breakdown
-
-- High Impact: 0
-- Medium Impact: 2
-- Low Impact: 1
-
-## Detailed Changes
-
-### 1. API Reference
-
-- **Type**: update
-- **Impact Level**: MEDIUM
-- **Score**: 55/100
-- **Summary**: Chunk "API Reference" updated (35.2% changed)
-
-**Factors**:
-- Moderate changes (>25% changed)
-- Links modified
-
-**Details**:
-- linesAdded: 15
-- linesRemoved: 8
-- changePercentage: 35.20
-...
-```
-
-## Workflow Examples
-
-### Example 1: Daily Documentation Updates
-
-```bash
-# Morning - check overnight changes
-node src/cli.js scan
-node src/cli.js assess -r
-
-# Review the report
-cat .dochistory/reports/impact-*.md | tail -n 100
-
-# Accept changes if okay
-node src/cli.js pull
-
-# View updated master
-cat docs/master.md
-```
-
-### Example 2: Continuous Documentation
-
-```bash
-# Start the watcher in background
-npm run watch &
-
-# Work on documentation throughout the day
-# System automatically monitors and updates
-
-# Check logs periodically
-tail -f .dochistory/scheduler.log
-
-# View latest statistics
-node src/cli.js stats
-```
-
-### Example 3: Team Collaboration
-
-```bash
-# Initialize new system
-npm run init
-
-# Import existing docs
-node src/cli.js import legacy-docs.md
-
-# Build initial master
-node src/cli.js build
-
-# Commit to git
-git add .
-git commit -m "Initialize living docs"
-git push
-
-# Team members can now:
-# 1. Edit chunks
-# 2. Run scan/assess
-# 3. Pull changes
-# 4. Commit to git
-```
-
-## Tips & Best Practices
-
-1. **Keep chunks focused** - One topic per chunk
-2. **Use meaningful names** - Easy to identify content
-3. **Set logical order** - Use `-o` flag for sequence
-4. **Tag appropriately** - Helps with organization
-5. **Review impact reports** - Understand change magnitude
-6. **Run scheduler** - Automate monitoring
-7. **Export regularly** - Create backups
-8. **Check statistics** - Monitor system health
-
-## Troubleshooting
-
-### Issue: Changes not detected
-
-**Solution:**
-```bash
-# Verify chunks exist
-node src/cli.js list
-
-# Check tracking state
-cat .dochistory/tracking.json
-
-# Force update tracking
-node src/cli.js pull
-```
-
-### Issue: Scheduler not working
-
-**Solution:**
-```bash
-# Check logs
-cat .dochistory/scheduler.log
-
-# Verify config
-cat config/config.json
-
-# Test manually
-node src/scheduler.js
-```
-
-### Issue: Master not updating
-
-**Solution:**
-```bash
-# Rebuild manually
-node src/cli.js build
-
-# Check permissions
-ls -la docs/
-
-# Verify config
-cat config/config.json | grep autoUpdate
-```
-
-## Getting Help
-
-- View all commands: `node src/cli.js --help`
-- View command help: `node src/cli.js <command> --help`
-- Check logs: `cat .dochistory/scheduler.log`
-- View statistics: `node src/cli.js stats`
+﻿# Living Documentation System - Usage Guide## Table of Contents1. [Getting Started](#getting-started)2. [Working with Chunks](#working-with-chunks)3. [Change Management](#change-management)4. [Version Control](#version-control)5. [Automation](#automation)6. [Advanced Features](#advanced-features)## Getting Started### Installation```bash# Clone the repositorygit clone <repository-url>cd versionContolAPP# Install dependenciesnpm install# Initialize the systemnpm run init```### Your First Documentation1. **Create your first chunk:**   ```bash   node src/cli.js add "Introduction" -c "# Welcome\n\nThis is our documentation."   ```2. **View your chunks:**   ```bash   node src/cli.js list   ```3. **Build the master document:**   ```bash   node src/cli.js build   ```4. **View the result:**   ```bash   cat docs/master.md   ```## Working with Chunks### Creating Chunks**From inline content:**```bashnode src/cli.js add "API Overview" -c "# API Overview\n\nOur REST API..."```**From a file:**```bashnode src/cli.js add "Installation Guide" install.md```**With metadata:**```bashnode src/cli.js add "Quick Start" -c "..." -o 0 -t "tutorial,beginner"```Options:- `-o, --order <number>`: Display order (lower numbers appear first)- `-t, --tags <tags>`: Comma-separated tags for organization### Updating Chunks1. **Find the chunk ID:**   ```bash   node src/cli.js list   ```2. **Update it:**   ```bash   node src/cli.js update chunk-abc12345 -c "New content"   ```   Or from a file:   ```bash   node src/cli.js update chunk-abc12345 updated-content.md   ```### Understanding ChunksChunks are stored as JSON files in `chunks/`:```json{  "id": "chunk-abc12345",  "name": "Introduction",  "content": "# Welcome...",  "metadata": {    "createdAt": "2026-01-22T10:00:00.000Z",    "updatedAt": "2026-01-22T10:30:00.000Z",    "order": 0,    "tags": ["tutorial", "beginner"]  },  "hash": "a1b2c3d4..."}```## Change Management### Scanning for Changes```bash# Quick scannode src/cli.js scan# Scan with impact assessmentnode src/cli.js assess# Generate detailed reportnode src/cli.js assess -r```### Understanding Impact Levels**Low Impact (0-39 points):**- Minor text changes- Typo fixes- Small additions**Medium Impact (40-69 points):**- Section updates- New content added- Moderate restructuring**High Impact (70-100 points):**- Major rewrites (>50% changed)- Content deletion- Structural changes (headings, links modified)### Accepting Changes```bash# Accept all changes (creates commit, rebuilds master)node src/cli.js pull# Accept without creating commitnode src/cli.js pull --no-commit# Accept without rebuilding masternode src/cli.js pull --no-build```## Version Control### Viewing History```bash# View last 10 commitsnode src/cli.js history# View last 20 commitsnode src/cli.js history -n 20# View history for specific chunknode src/cli.js history --chunk chunk-abc12345```### Understanding CommitsEach commit includes:- Unique ID- Timestamp- Author (user/scheduler/system)- List of changes- Impact assessment for each changeExample commit:```json{  "id": "1706789400000-abc12345",  "message": "Pull: 3 change(s)",  "author": "user",  "timestamp": "2026-01-22T10:30:00.000Z",  "changes": [    {      "chunkId": "chunk-xyz",      "chunkName": "API Reference",      "type": "update",      "impact": "medium"    }  ]}```### History Files- `.dochistory/history.json` - Commit metadata- `.dochistory/snapshots/<commit-id>.json` - Full snapshots- `.dochistory/reports/` - Impact assessment reports## Automation### Cyclical MonitoringStart the automatic checker:```bashnpm run watch# ornode src/cli.js watch```**What it does:**1. Scans for changes every 15 minutes2. Assesses impact of detected changes3. Creates commits automatically4. Updates master document5. Generates impact reports6. Logs all activity to `.dochistory/scheduler.log`**Monitor the logs:**```bash# Follow the log filetail -f .dochistory/scheduler.log# View recent activitytail -n 50 .dochistory/scheduler.log```### ConfigurationEdit `config/config.json`:```json{  "interval": "*/15 * * * *",  "autoCommit": true,  "autoUpdate": true}```**Adjust the interval:**- Every 5 minutes: `"*/5 * * * *"`- Every 30 minutes: `"*/30 * * * *"`- Every hour: `"0 * * * *"`- Every 4 hours: `"0 */4 * * *"`**Disable auto-commit:**```json{  "autoCommit": false}```**Disable auto-update:**```json{  "autoUpdate": false}```## Advanced Features### Importing Existing Documentation```bash# Import markdown filenode src/cli.js import existing-docs.md```The system will:1. Parse headings (## level)2. Create chunks for each section3. Preserve order4. Assign sequential order numbers### Exporting Documentation**To Markdown:**```bashnode src/cli.js export markdown -o export.md```**To JSON:**```bashnode src/cli.js export json -o export.json```**To HTML:**```bashnode src/cli.js export html -o export.html```### Viewing Statistics```bashnode src/cli.js stats```Displays:- Total chunks- Total commits- Change breakdown (create/update/delete)- Impact distribution (high/medium/low)- Scan statistics### Working with TagsAdd tags when creating chunks:```bashnode src/cli.js add "Security Guide" -c "..." -t "security,advanced"```Tags are stored in chunk metadata and can be used for filtering and organization.### Master Document StructureThe generated master document includes:1. **Header** with metadata2. **Table of Contents** with links3. **Content sections** from all chunks (ordered)4. **Chunk metadata** (hidden in HTML comments)5. **Footer** with generation timestampExample:```markdown# Master Document> **Living Documentation System**> Last Updated: 2026-01-22T10:30:00.000Z> Total Chunks: 5---## Table of Contents1. [Introduction](#introduction)2. [Getting Started](#getting-started)...---## 1. Introduction*Last modified: 2026-01-22T09:00:00.000Z*Content here...<!-- CHUNK_ID: chunk-abc --><!-- CHUNK_HASH: a1b2c3... -->```### Impact ReportsGenerated in `.dochistory/reports/`:```markdown# Impact Assessment ReportGenerated: 2026-01-22T10:30:00.000Z## Overall Impact- **Level**: MEDIUM- **Score**: 45.5/100- **Summary**: 3 change(s) detected: 0 high, 2 medium, 1 low impact### Breakdown- High Impact: 0- Medium Impact: 2- Low Impact: 1## Detailed Changes### 1. API Reference- **Type**: update- **Impact Level**: MEDIUM- **Score**: 55/100- **Summary**: Chunk "API Reference" updated (35.2% changed)**Factors**:- Moderate changes (>25% changed)- Links modified**Details**:- linesAdded: 15- linesRemoved: 8- changePercentage: 35.20...```## Workflow Examples### Example 1: Daily Documentation Updates```bash# Morning - check overnight changesnode src/cli.js scannode src/cli.js assess -r# Review the reportcat .dochistory/reports/impact-*.md | tail -n 100# Accept changes if okaynode src/cli.js pull# View updated mastercat docs/master.md```### Example 2: Continuous Documentation```bash# Start the watcher in backgroundnpm run watch &# Work on documentation throughout the day# System automatically monitors and updates# Check logs periodicallytail -f .dochistory/scheduler.log# View latest statisticsnode src/cli.js stats```### Example 3: Team Collaboration```bash# Initialize new systemnpm run init# Import existing docsnode src/cli.js import legacy-docs.md# Build initial masternode src/cli.js build# Commit to gitgit add .git commit -m "Initialize living docs"git push# Team members can now:# 1. Edit chunks# 2. Run scan/assess# 3. Pull changes# 4. Commit to git```## Tips & Best Practices1. **Keep chunks focused** - One topic per chunk2. **Use meaningful names** - Easy to identify content3. **Set logical order** - Use `-o` flag for sequence4. **Tag appropriately** - Helps with organization5. **Review impact reports** - Understand change magnitude6. **Run scheduler** - Automate monitoring7. **Export regularly** - Create backups8. **Check statistics** - Monitor system health## Troubleshooting### Issue: Changes not detected**Solution:**```bash# Verify chunks existnode src/cli.js list# Check tracking statecat .dochistory/tracking.json# Force update trackingnode src/cli.js pull```### Issue: Scheduler not working**Solution:**```bash# Check logscat .dochistory/scheduler.log# Verify configcat config/config.json# Test manuallynode src/scheduler.js```### Issue: Master not updating**Solution:**```bash# Rebuild manuallynode src/cli.js build# Check permissionsls -la docs/# Verify configcat config/config.json | grep autoUpdate```## Getting Help- View all commands: `node src/cli.js --help`- View command help: `node src/cli.js <command> --help`- Check logs: `cat .dochistory/scheduler.log`- View statistics: `node src/cli.js stats`
