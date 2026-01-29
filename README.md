@@ -31,7 +31,9 @@ node src/init.js
 ```
 
 This creates the necessary directory structure:
+
 - `chunks/` - Individual documentation chunks
+
 - `docs/` - Generated master documents and views
 - `.dochistory/` - Version control and change history
 - `config/` - Configuration files
@@ -67,6 +69,7 @@ node src/cli.js watch
 
 The system will now:
 - Check for changes every 15 minutes
+
 - Assess impact of changes
 - Create commits automatically
 - Update the master document
