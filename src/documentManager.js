@@ -106,8 +106,8 @@ class DocumentManager {
         return JSON.parse(content);
       })
       .sort((a, b) => {
-        const orderA = a.metadata.order || 999;
-        const orderB = b.metadata.order || 999;
+        const orderA = a.metadata.order !== undefined ? a.metadata.order : 999;
+        const orderB = b.metadata.order !== undefined ? b.metadata.order : 999;
         return orderA - orderB;
       });
   }
@@ -124,6 +124,49 @@ class DocumentManager {
     }
 
     return false;
+  }
+
+  /**
+   * Delete all chunks
+   */
+  deleteAllChunks() {
+    if (!fs.existsSync(this.chunksDir)) {
+      return { deleted: 0, chunks: [] };
+    }
+
+    const files = fs.readdirSync(this.chunksDir);
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
+    const deletedChunks = [];
+
+    jsonFiles.forEach(file => {
+      const chunkPath = path.join(this.chunksDir, file);
+      const chunk = JSON.parse(fs.readFileSync(chunkPath, 'utf8'));
+      deletedChunks.push({ id: chunk.id, name: chunk.name });
+      fs.unlinkSync(chunkPath);
+    });
+
+    return { deleted: deletedChunks.length, chunks: deletedChunks };
+  }
+
+  /**
+   * Set chunk order
+   */
+  setChunkOrder(chunkId, newOrder) {
+    const chunkPath = path.join(this.chunksDir, `${chunkId}.json`);
+
+    if (!fs.existsSync(chunkPath)) {
+      throw new Error(`Chunk ${chunkId} not found`);
+    }
+
+    const chunk = JSON.parse(fs.readFileSync(chunkPath, 'utf8'));
+    const oldOrder = chunk.metadata.order || 999;
+
+    chunk.metadata.order = parseInt(newOrder);
+    chunk.metadata.updatedAt = new Date().toISOString();
+
+    fs.writeFileSync(chunkPath, JSON.stringify(chunk, null, 2));
+
+    return { chunk, oldOrder, newOrder: chunk.metadata.order };
   }
 
   /**

@@ -96,6 +96,15 @@ node src/cli.js remove <chunkId>  # Alias
 node src/cli.js rm <chunkId>      # Alias
   -f, --force                Force deletion without confirmation
 
+# Delete all chunks
+node src/cli.js delete-all [options]
+node src/cli.js clear  # Alias
+  -f, --force                Force deletion without confirmation
+
+# Reorder chunk
+node src/cli.js reorder <chunkId> <order>
+node src/cli.js order <chunkId> <order>  # Alias
+
 # List all chunks
 node src/cli.js list
 

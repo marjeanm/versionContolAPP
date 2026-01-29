@@ -81,12 +81,61 @@ living-docs rm chunk-abc12345 --force
 
 ---
 
+### Delete All Chunks
+```bash
+living-docs delete-all [options]
+living-docs clear [options]      # Alias
+```
+
+**Options:**
+- `-f, --force` - Skip confirmation prompt (required)
+
+**Examples:**
+```bash
+# View what will be deleted (shows list)
+living-docs delete-all
+
+# Actually delete all chunks (requires --force)
+living-docs delete-all --force
+
+# Using alias
+living-docs clear --force
+```
+
+**Safety:** Deletes ALL chunks permanently. Requires `--force` and shows a warning with the list of chunks to be deleted.
+
+---
+
+### Reorder Chunk
+```bash
+living-docs reorder <chunkId> <order>
+living-docs order <chunkId> <order>    # Alias
+```
+
+Changes the display order of a chunk. Lower numbers appear first.
+
+**Examples:**
+```bash
+# Set chunk to appear first
+living-docs reorder chunk-abc12345 0
+
+# Set chunk to appear second
+living-docs order chunk-abc12345 1
+
+# Set chunk to appear last
+living-docs reorder chunk-abc12345 999
+```
+
+**Note:** After reordering, run `living-docs build` to regenerate the master document in the new order.
+
+---
+
 ### List Chunks
 ```bash
 living-docs list
 ```
 
-Shows all chunks with IDs, names, hashes, and timestamps.
+Shows all chunks with IDs, names, hashes, and timestamps, sorted by display order.
 
 ---
 
@@ -309,6 +358,40 @@ living-docs add "New Doc" -c "..."
 living-docs update chunk-yyy -c "..."
 
 # Watcher automatically handles changes
+```
+
+### Reorder Chunks Workflow
+```bash
+# 1. List chunks to see current order
+living-docs list
+
+# 2. Reorder chunks as needed
+living-docs reorder chunk-xxx 0   # Make it first
+living-docs reorder chunk-yyy 1   # Make it second
+living-docs reorder chunk-zzz 2   # Make it third
+
+# 3. Rebuild master document
+living-docs build
+
+# 4. Verify new order
+cat docs/master.md
+```
+
+### Start Fresh Workflow
+```bash
+# 1. Delete all existing chunks
+living-docs delete-all --force
+
+# 2. Add new chunks
+living-docs add "Overview" -c "..." -o 0
+living-docs add "Setup" -c "..." -o 1
+living-docs add "Usage" -c "..." -o 2
+
+# 3. Build master
+living-docs build
+
+# 4. Start watching
+living-docs watch
 ```
 
 ---
